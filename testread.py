@@ -7,7 +7,9 @@ def main(argv):
     filename = argv[0]
     #TODO: check if it has .xlsx tag at the end
     print(filename)
-    df = pd.read_excel(filename, usecols="B, G, M:P")
+
+    #Read the excel file into a dataframe using the specific columns
+    df = pd.read_excel(filename, usecols="N:P")
 
     #Remove rows that had NaN since they don't have a time
     df = df.dropna()
