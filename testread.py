@@ -23,12 +23,15 @@ def main(argv):
 
     #This line keeps all rows that contain 'Kohlberg' in its 'BLDG_RM1' col 
     notValidRooms = ["Lang Perf Arts Ctr", "Matchbox", "Off Campus", "TBA", "Whittier", "Lang Music", 
-        "Ware", "Fieldhouse", "Mullan Tennis"]
+        "Ware", "Fieldhouse", "Mullan Tennis", "Lodges"]
     df = df[~(df['BLDG_RM1'].str.contains('|'.join(notValidRooms)))]
     #Reset the table indices
     df = df.reset_index()
     print(df)
     print(df.shape)
+
+    finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWTF")) 
+    #print(finaldf)
     return
 
 if __name__ == "__main__":
