@@ -10,6 +10,7 @@ Purpose: Sets up a dataframe (df) using only the columns N:P which should be:
     N: Days
     O: Time1
     P: BLDG_RM1
+
 Returns df, a dataframe containing columns N, O, and P
 """
 def makeDF(filename):
@@ -26,6 +27,7 @@ Purpose: takes the original dataframe (df) to do the following:
     2. Remove rooms that are not considered to be classrooms
     3. Reset the index of the dataframe after the above changes are made
 Rooms considered not to be valid classrooms are assigned to the variable 'notValidRooms'
+
 Returns df, a dataframe that contains only "valid" classrooms
 """
 def formatDF(df):
@@ -80,6 +82,16 @@ def makeRoomDict(df):
     
     return roomDict
 
+"""
+calcValidTime
+Parameters: roomDict, a dictionary whose keys are classrooms and values are a list of tuples
+made as a (day, time) pair
+Purpose: create a dictionary where:
+    * The keys are the business days (M-F)
+    * The values are Why didint i just make a nested dict?
+"""
+
+
 
 def main(argv):
     #Read the excel file
@@ -93,7 +105,7 @@ def main(argv):
 
     roomDict = makeRoomDict(df)
     
-    finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWHF")) 
+    #finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWHF")) 
     #print(finaldf)
 
     return
