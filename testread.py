@@ -67,13 +67,25 @@ def makeRoomDict(df):
         #if room already in dict
         if df.iloc[i, 3] in roomDict:
             #get the value, append new item, update val in dic
-            currentTimes = roomDict.get(df.iloc[i, 3])
-            currentTimes.append((df.iloc[i, 1], df.iloc[i, 2]))
-            roomDict.update({df.iloc[i, 3]: currentTimes})
+            if "MWF" in df.iloc[i, 1] or "TTH" in df.iloc[i, 1]:
+                currentTimes = roomDict.get(df.iloc[i, 3])
+                lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
+                currentTimes.extend(lstOfTimes)
+                roomDict.update({df.iloc[i, 3]: currentTimes})
+            else:
+                currentTimes = roomDict.get(df.iloc[i, 3])
+                currentTimes.append((df.iloc[i, 1], df.iloc[i, 2]))
+                roomDict.update({df.iloc[i, 3]: currentTimes})
+
         #else if room not in dict
         else:
-            #add room to dict with list of times
-            roomDict[df.iloc[i, 3]] = [(df.iloc[i, 1], df.iloc[i, 2])]
+            if "MWF" in df.iloc[i, 1] or "TTH" in df.iloc[i, 1]:
+                lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
+                roomDict[df.iloc[i, 3]] = lstOfTimes
+
+            else:
+                #add room to dict with list of times
+                roomDict[df.iloc[i, 3]] = [(df.iloc[i, 1], df.iloc[i, 2])]
 
     #Print statements delete later
     print("The loop worked?")
@@ -82,6 +94,26 @@ def makeRoomDict(df):
     
     return roomDict
 
+
+"""
+sepTimes
+Parameters: tplTime, a tuple made as a (day, time) pair
+Purpose: seperate times that are in MWF or TTH format into (Day, Time) pair where Day is just one day
+Returns lstOfTimes, a list with times seperated 
+"""
+
+def sepTimes(tplTime):
+    lstOfTimes = []
+    if "MWF" in tplTime:
+        lstOfTimes.append(("M", tplTime[1]))
+        lstOfTimes.append(("W", tplTime[1]))
+        lstOfTimes.append(("F", tplTime[1]))
+    else:
+        lstOfTimes.append(("T", tplTime[1]))
+        lstOfTimes.append(("TH",tplTime[1]))
+    return lstOfTimes
+
+
 """
 calcValidTime
 Parameters: roomDict, a dictionary whose keys are classrooms and values are a list of tuples
@@ -89,6 +121,10 @@ made as a (day, time) pair
 Purpose: create a dictionary where:
     * The keys are the business days (M-F)
     * The values are Why didint i just make a nested dict?
+keep a container for free times
+Range for free time is from 8:00AM to 10:00PM
+For each room:
+    Loo
 """
 
 
@@ -107,6 +143,8 @@ def main(argv):
     
     #finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWHF")) 
     #print(finaldf)
+
+    #roomDict = sepTimes(roomDict)
 
     return
 
