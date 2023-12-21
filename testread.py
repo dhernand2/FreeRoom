@@ -67,26 +67,14 @@ def makeRoomDict(df):
         #if room already in dict
         if df.iloc[i, 3] in roomDict:
             #get the value, append new item, update val in dic
-            if "MWF" in df.iloc[i, 1] or "TTH" in df.iloc[i, 1]:
-                currentTimes = roomDict.get(df.iloc[i, 3])
-                lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
-                currentTimes.extend(lstOfTimes)
-                roomDict.update({df.iloc[i, 3]: currentTimes})
-            else:
-                currentTimes = roomDict.get(df.iloc[i, 3])
-                currentTimes.append((df.iloc[i, 1], df.iloc[i, 2]))
-                roomDict.update({df.iloc[i, 3]: currentTimes})
-
+            currentTimes = roomDict.get(df.iloc[i, 3])
+            lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
+            currentTimes.extend(lstOfTimes)
+            roomDict.update({df.iloc[i, 3]: currentTimes})
         #else if room not in dict
         else:
-            if "MWF" in df.iloc[i, 1] or "TTH" in df.iloc[i, 1]:
-                lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
-                roomDict[df.iloc[i, 3]] = lstOfTimes
-
-            else:
-                #add room to dict with list of times
-                roomDict[df.iloc[i, 3]] = [(df.iloc[i, 1], df.iloc[i, 2])]
-
+            lstOfTimes = sepTimes((df.iloc[i, 1], df.iloc[i, 2]))
+            roomDict[df.iloc[i, 3]] = lstOfTimes
     #Print statements delete later
     print("The loop worked?")
     for i in roomDict.get("Science Center 181"):
@@ -98,12 +86,15 @@ def makeRoomDict(df):
 """
 sepTimes
 Parameters: tplTime, a tuple made as a (day, time) pair
-Purpose: seperate times that are in MWF or TTH format into (Day, Time) pair where Day is just one day
-Returns lstOfTimes, a list with times seperated 
+Purpose: seperate times that for which the day value contains mutiple days (MW, MWF, etc...)
+into a set of tuples where each day value contains just one day (M, some time), (W, some time) etc.
+In the case that the day value is already in a single day format, we add tplTime to lstOfTimes
+Returns lstOfTimes, a list of tuples with times seperated 
 """
 
 def sepTimes(tplTime):
     lstOfTimes = []
+    #print("Day is: " + tplTime[0])
     if "MWF" in tplTime:
         lstOfTimes.append(("M", tplTime[1]))
         lstOfTimes.append(("W", tplTime[1]))
@@ -114,6 +105,9 @@ def sepTimes(tplTime):
     elif "MF" in tplTime:
         lstOfTimes.append(("M", tplTime[1]))
         lstOfTimes.append(("F", tplTime[1]))
+    elif "TTH" in tplTime:
+        lstOfTimes.append(("T", tplTime[1]))
+        lstOfTimes.append(("TH",tplTime[1]))
     elif "TWTHF" in tplTime:
         lstOfTimes.append(("T", tplTime[1]))
         lstOfTimes.append(("W", tplTime[1]))
@@ -125,6 +119,8 @@ def sepTimes(tplTime):
         lstOfTimes.append(("W", tplTime[1]))
         lstOfTimes.append(("TH",tplTime[1]))
         lstOfTimes.append(("F", tplTime[1]))
+    else:
+         lstOfTimes.append(tplTime)
     return lstOfTimes
 
 
