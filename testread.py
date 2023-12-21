@@ -90,7 +90,7 @@ def makeRoomDict(df):
     #Print statements delete later
     print("The loop worked?")
     for i in roomDict.get("Science Center 181"):
-        print(i)
+        print(i[0])
     
     return roomDict
 
@@ -108,24 +108,53 @@ def sepTimes(tplTime):
         lstOfTimes.append(("M", tplTime[1]))
         lstOfTimes.append(("W", tplTime[1]))
         lstOfTimes.append(("F", tplTime[1]))
-    else:
+    elif "MW" in tplTime:
+        lstOfTimes.append(("M", tplTime[1]))
+        lstOfTimes.append(("W", tplTime[1]))
+    elif "MF" in tplTime:
+        lstOfTimes.append(("M", tplTime[1]))
+        lstOfTimes.append(("F", tplTime[1]))
+    elif "TWTHF" in tplTime:
         lstOfTimes.append(("T", tplTime[1]))
+        lstOfTimes.append(("W", tplTime[1]))
         lstOfTimes.append(("TH",tplTime[1]))
+        lstOfTimes.append(("F", tplTime[1]))
+    elif "UMTWTHF" in tplTime:
+        lstOfTimes.append(("M", tplTime[1]))
+        lstOfTimes.append(("T", tplTime[1]))
+        lstOfTimes.append(("W", tplTime[1]))
+        lstOfTimes.append(("TH",tplTime[1]))
+        lstOfTimes.append(("F", tplTime[1]))
     return lstOfTimes
 
 
 """
-calcValidTime
+setTime
 Parameters: roomDict, a dictionary whose keys are classrooms and values are a list of tuples
 made as a (day, time) pair
-Purpose: create a dictionary where:
-    * The keys are the business days (M-F)
-    * The values are Why didint i just make a nested dict?
+Purpose: populate a set of dictionaries (Mon, Tues, Weds, Thurs, Fri) where:
+    * The keys are the classrooms
+    * The values are the times in which the rooms are in use
+
+Additional notes 
 keep a container for free times
 Range for free time is from 8:00AM to 10:00PM
 For each room:
-    Loo
+    Find the tuples
+    Look at tuple m[0]
+    Locate the proper dict to add the room, time 
+
+End
 """
+def setTime(roomDict):
+    for room,times in roomDict.items():
+        #given a tuple, a room and a list of tuples containing (day, time)
+        for i in times:
+            #given a tuple containing (day, time) MTWTHF
+            #if (i[0] = "M"):
+            print(i)
+            #else:
+    return
 
 
 
@@ -152,6 +181,8 @@ def saveTimes(roomDict):
 
 
 def main(argv):
+    global Mon, Tues, Weds, Thurs, Fri
+    Mon, Tues, Weds, Thurs, Fri = {}, {}, {}, {}, {}
     #Read the excel file
     filename = argv[0]
     #TODO: check if it has .xlsx tag at the end
@@ -163,13 +194,21 @@ def main(argv):
 
     roomDict = makeRoomDict(df)
     
+
+    ####Testing stuff delete later
+    #rooms = roomDict.keys()
+    #for i in rooms:
+     #   print(i)
+    ###
+
+
+    #This should make the final df where the index are the rooms, and the col go M-F
     #finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWHF")) 
     finaldf = pd.DataFrame.from_dict(roomDict, orient='index')
     #print(finaldf)
-    saveTimes(roomDict)
+    #saveTimes(roomDict)
 
-    #for x,y in roomDict.items():
-     #   print(x,y)
+    setTime(roomDict)
     return
 
 if __name__ == "__main__":
