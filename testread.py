@@ -147,10 +147,30 @@ def setTime(roomDict):
         #given a tuple, a room and a list of tuples containing (day, time)
         for i in times:
             #given a tuple containing (day, time) MTWTHF
-            #if (i[0] = "M"):
-            print(i)
-            #else:
+            if (i[0] == "M"):
+                addItems(Mon, (room, i[1]))
+            elif (i[0] == "T"):
+                addItems(Tues, (room, i[1]))
+            elif (i[0] == "W"):
+                addItems(Weds, (room, i[1]))
+            elif (i[0] == "TH"):
+                addItems(Thurs, (room, i[1]))
+            else:
+                addItems(Fri, (room, i[1]))
+
+    for i,j in Fri.items():
+        print(i,j)
     return
+
+def addItems(container, item):
+    if item[0] in container:
+        setofValues = container.get(item[0])
+        setofValues.append(item[1])
+        container.update({item[0]: setofValues})
+    else:
+        container[item[0]] = [item[1]]
+
+
 
 
 
