@@ -40,3 +40,11 @@ Thumbs.db
 # Sandbox files #
 ######################
 sandbox.py
+
+# PNG files #
+######################
+*.png
+
+# Folders #
+######################
+venv/

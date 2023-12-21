@@ -129,6 +129,28 @@ For each room:
 
 
 
+"""
+saveTimes
+Parameters: none
+Purpose: create a file containing the times in which the rooms are being used
+Return: nothing, 
+"""
+def saveTimes(roomDict):
+    safe = 1
+    while (safe != 0):
+        filename = input("Enter a name for the file: ")
+        try:
+            f = open(filename, "x")
+            safe = 0
+        except:
+            print("That filename already exists")
+            response = input("Enter another name: ")
+    for x, y in roomDict.items():
+        f.write(x + ": " + str(y) + "\n")
+    f.close()
+    return
+
+
 def main(argv):
     #Read the excel file
     filename = argv[0]
@@ -142,10 +164,12 @@ def main(argv):
     roomDict = makeRoomDict(df)
     
     #finaldf = pd.DataFrame(0, index = df['BLDG_RM1'].unique(), columns = list("MTWHF")) 
+    finaldf = pd.DataFrame.from_dict(roomDict, orient='index')
     #print(finaldf)
+    saveTimes(roomDict)
 
-    #roomDict = sepTimes(roomDict)
-
+    #for x,y in roomDict.items():
+     #   print(x,y)
     return
 
 if __name__ == "__main__":
