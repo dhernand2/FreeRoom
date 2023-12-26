@@ -200,11 +200,11 @@ def main(argv):
     global mon, tues, weds, thurs, fri
     mon, tues, weds, thurs, fri = {}, {}, {}, {}, {}
     dictionary_pair = [
-        ("Monday Times", mon), 
-        ("Tuesday Times", tues), 
-        ("Wednesday Times", weds), 
-        ("Thursday Times", thurs), 
-        ("Friday Times", fri)
+        ("Monday Times.txt", mon), 
+        ("Tuesday Times.txt", tues), 
+        ("Wednesday Times.txt", weds), 
+        ("Thursday Times.txt", thurs), 
+        ("Friday Times.txt", fri)
         ]
     #Read the excel file
     file_name = argv[0]
